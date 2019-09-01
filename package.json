@@ -1,7 +1,7 @@
 {
   "name": "local-storage-proxy",
   "description": "WIP - nothing to see here",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "Bret Comnes <bcomnes@gmail.com> (https://bret.io)",
   "bugs": {
     "url": "https://github.com/bcomnes/local-storage-proxy/issues"
