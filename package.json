@@ -1,0 +1,35 @@
+{
+  "name": "local-storage-proxy",
+  "description": "WIP - nothing to see here",
+  "version": "0.0.0",
+  "author": "Bret Comnes <bcomnes@gmail.com> (https://bret.io)",
+  "bugs": {
+    "url": "https://github.com/bcomnes/local-storage-proxy/issues"
+  },
+  "dependencies": {
+    "nanoassert": "^2.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.0",
+    "dependency-check": "^4.1.0",
+    "npm-run-all": "^4.1.5",
+    "standard": "^13.1.0",
+    "tape": "^4.11.0",
+    "tape-promise": "^4.0.0",
+    "tape-run": "^6.0.1"
+  },
+  "homepage": "https://github.com/bcomnes/local-storage-proxy",
+  "keywords": [],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bcomnes/local-storage-proxy.git"
+  },
+  "scripts": {
+    "test": "run-s test:*",
+    "test:deps": "dependency-check . --no-dev --no-peer",
+    "test:standard": "standard",
+    "test:tape": "browserify test.js | tape-run"
+  }
+}
