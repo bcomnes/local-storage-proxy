@@ -41,6 +41,8 @@ Create a local storage proxy attatched to a root `namespace`.  All gets and sets
 }
 ```
 
+Additions to the `opts.defaults` object can be safely added without overwriting existing data, and can also be assumed to be available even adter the user has instantiated default and new data to the same namepace.
+
 ## License
 
 MIT
