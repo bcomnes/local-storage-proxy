@@ -1,7 +1,7 @@
 const tape = require('tape')
 const ptape = require('tape-promise').default
 const test = ptape(tape)
-const localStorageProxy = require('.')
+const localStorageProxy = require('.').default
 
 test('test basic behavior', async t => {
   window.localStorage.clear()

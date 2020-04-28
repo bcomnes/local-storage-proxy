@@ -9,8 +9,10 @@ npm install local-storage-proxy
 ## Usage
 
 ``` js
-const localStorageProxy = require('local-storage-proxy')
+import localStorageProxy from 'https://unpkg.com/local-storage-proxy@^2'
+
 window.localStorage.clear()
+
 const state = localStorageProxy('namespace', {
   defaults: {
     some: [], // Doesn't override saved state

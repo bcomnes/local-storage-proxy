@@ -1,5 +1,6 @@
-const assert = require('nanoassert')
-module.exports = (name, opts = {}) => {
+'use strict';
+const assert = (m => m.__esModule ? /* istanbul ignore next */ m.default : /* istanbul ignore next */ m)(require('webassert'))
+Object.defineProperty(exports, '__esModule', {value: true}).default = (name, opts = {}) => {
   assert(name, 'namepace required')
   const { defaults } = opts
 
