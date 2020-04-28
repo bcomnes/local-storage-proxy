@@ -9,7 +9,7 @@ npm install local-storage-proxy
 ## Usage
 
 ``` js
-import localStorageProxy from 'https://unpkg.com/local-storage-proxy@^2'
+import localStorageProxy from 'https://unpkg.com/local-storage-proxy@^2?module'
 
 window.localStorage.clear()
 
