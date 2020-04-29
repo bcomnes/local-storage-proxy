@@ -6,15 +6,15 @@
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "exports": {
-    "import": "esm/index.js",
-    "require": "cjs/index.js"
+    "import": "./esm/index.js",
+    "require": "./cjs/index.js"
   },
   "author": "Bret Comnes <bcomnes@gmail.com> (https://bret.io)",
   "bugs": {
     "url": "https://github.com/bcomnes/local-storage-proxy/issues"
   },
   "dependencies": {
-    "webassert": "^3.0.0"
+    "webassert": "^3.0.1"
   },
   "devDependencies": {
     "ascjs": "^4.0.0",

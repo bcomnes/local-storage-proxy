@@ -1,11 +1,27 @@
 import assert from 'webassert'
+
+if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
+  let _nodeStorage = {}
+  var localStorage = {
+    getItem(name) {
+      return _nodeStorage[name] || null
+    },
+    setItem(name, value) {
+      if (arguments.length < 2) throw new Error('Failed to execute \'setItem\' on \'Storage\': 2 arguments required, but only 1 present.')
+      _nodeStorage[name] = (value).toString()
+    }
+  }
+} else {
+  var localStorage = window.localStorage
+}
+
 export default (name, opts = {}) => {
   assert(name, 'namepace required')
-  const { defaults } = opts
+  const { defaults = {} } = opts
 
   let state
   try {
-    state = JSON.parse(window.localStorage.getItem(name)) || {}
+    state = JSON.parse(localStorage.getItem(name)) || {}
   } catch (e) {
     console.error(e)
     state = {}
@@ -25,7 +41,7 @@ export default (name, opts = {}) => {
       set (obj, prop, value) {
         obj[prop] = value
         try {
-          window.localStorage.setItem(name, JSON.stringify(rootRef))
+          localStorage.setItem(name, JSON.stringify(rootRef))
           return true
         } catch (e) {
           console.error(e)
