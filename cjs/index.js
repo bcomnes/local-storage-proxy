@@ -1,33 +1,43 @@
 'use strict';
 const assert = (m => m.__esModule ? /* istanbul ignore next */ m.default : /* istanbul ignore next */ m)(require('webassert'))
 
+let ls
 if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
-  let _nodeStorage = {}
-  var localStorage = {
-    getItem(name) {
+  const _nodeStorage = {}
+  ls = {
+    getItem (name) {
       return _nodeStorage[name] || null
     },
-    setItem(name, value) {
+    setItem (name, value) {
       if (arguments.length < 2) throw new Error('Failed to execute \'setItem\' on \'Storage\': 2 arguments required, but only 1 present.')
       _nodeStorage[name] = (value).toString()
+    },
+    removeItem (name) {
+      delete _nodeStorage[name]
     }
   }
 } else {
-  var localStorage = window.localStorage
+  ls = window.localStorage
 }
 
 Object.defineProperty(exports, '__esModule', {value: true}).default = (name, opts = {}) => {
   assert(name, 'namepace required')
-  const { defaults = {} } = opts
+  const { defaults = {}, lspReset = false } = opts
 
   let state
   try {
-    state = JSON.parse(localStorage.getItem(name)) || {}
+    state = JSON.parse(ls.getItem(name)) || {}
+    if (state.lspReset !== lspReset) {
+      ls.removeItem(name)
+      state = {}
+    }
   } catch (e) {
     console.error(e)
+    ls.removeItem(name)
     state = {}
   }
 
+  state.lspReset = lspReset
   state = Object.assign(defaults, state)
 
   function boundHandler (rootRef) {
@@ -42,7 +52,7 @@ Object.defineProperty(exports, '__esModule', {value: true}).default = (name, opt
       set (obj, prop, value) {
         obj[prop] = value
         try {
-          localStorage.setItem(name, JSON.stringify(rootRef))
+          ls.setItem(name, JSON.stringify(rootRef))
           return true
         } catch (e) {
           console.error(e)
