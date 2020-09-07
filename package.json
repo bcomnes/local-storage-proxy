@@ -1,7 +1,7 @@
 {
   "name": "local-storage-proxy",
   "description": "A proxy for accessing localstorage as an object",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "type": "module",
   "main": "cjs/index.js",
   "module": "esm/index.js",
