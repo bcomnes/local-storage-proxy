@@ -24,8 +24,13 @@ jobs:
         node-version: ${{ env.node_version }}
         # setting a registry enables the NODE_AUTH_TOKEN env variable where we can set an npm token.  REQUIRED
         registry-url: 'https://registry.npmjs.org'
+    - run: sudo apt-get install xvfb
+    - run: npm i
+    - run: xvfb-run --auto-servernum npm test
+    - name: Cleanup xvfb pidx
+      uses: bcomnes/cleanup-xvfb@v1
     - name: Test, version and publush to npm
-      uses: bcomnes/npm-bump@v2.0.0
+      uses: bcomnes/npm-bump@v2.0.1
       with:
         git_email: bcomnes@gmail.com
         git_username: ${{ github.actor }}
