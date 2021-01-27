@@ -17,7 +17,7 @@
     "webassert": "^3.0.1"
   },
   "devDependencies": {
-    "ascjs": "^4.0.0",
+    "ascjs": "^5.0.0",
     "browserify": "^17.0.0",
     "dependency-check": "^4.1.0",
     "auto-changelog": "^2.0.0",
