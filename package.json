@@ -25,7 +25,7 @@
     "standard": "^16.0.0",
     "tape": "^5.0.1",
     "tape-promise": "^4.0.0",
-    "gh-release": "^5.0.0",
+    "gh-release": "^6.0.0",
     "tape-run": "^9.0.0"
   },
   "homepage": "https://github.com/bcomnes/local-storage-proxy",
