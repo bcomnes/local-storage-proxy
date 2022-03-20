@@ -43,6 +43,7 @@
     "test:deps": "dependency-check . --no-dev --no-peer",
     "test:standard": "standard",
     "test:tape": "browserify test.cjs | tape-run",
+    "test:node": "tape test.cjs",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md"
   },
   "standard": {
