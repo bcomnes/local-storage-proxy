@@ -23,13 +23,22 @@ if (typeof window === 'undefined' || typeof window.localStorage === 'undefined')
 
 Object.defineProperty(exports, '__esModule', {value: true}).default = (name, opts = {}) => {
   assert(name, 'namepace required')
-  const { defaults = {}, lspReset = false } = opts
+  const {
+    defaults = {},
+    lspReset = false,
+    storageEventListener = true
+  } = opts
 
   const state = new EventTarget()
   try {
     const restoredState = JSON.parse(ls.getItem(name)) || {}
     if (restoredState.lspReset !== lspReset) {
       ls.removeItem(name)
+      for (const [k, v] of Object.entries({
+        ...defaults
+      })) {
+        state[k] = v
+      }
     } else {
       for (const [k, v] of Object.entries({
         ...defaults,
@@ -45,11 +54,20 @@ Object.defineProperty(exports, '__esModule', {value: true}).default = (name, opt
 
   state.lspReset = lspReset
 
+  if (storageEventListener && typeof window?.addEventListener !== 'undefined') {
+    state.addEventListener('storage', (ev) => {
+      state.dispatchEvent(new Event('update'))
+    })
+  }
+
   function boundHandler (rootRef) {
     return {
       get (obj, prop) {
         if (typeof obj[prop] === 'object' && obj[prop] !== null) {
           return new Proxy(obj[prop], boundHandler(rootRef))
+        } else if (typeof obj[prop] === 'function' && obj === rootRef) {
+          // this returns bound EventTarget functions
+          return obj[prop].bind(obj)
         } else {
           return obj[prop]
         }
