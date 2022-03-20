@@ -3,8 +3,10 @@ const ptape = require('tape-promise').default
 const test = ptape(tape)
 const localStorageProxy = require('.').default
 
+const isBrowser = typeof window !== 'undefined'
+
 test('test basic behavior', async t => {
-  window.localStorage.clear()
+  if (isBrowser) window.localStorage.clear()
   const state = localStorageProxy('test', {
     defaults: {
       foo: 'bar',
@@ -16,7 +18,7 @@ test('test basic behavior', async t => {
   })
   t.equal(state.foo, 'bar')
   state.biz.push('bing')
-  t.equal(window.localStorage.getItem('test'), '{"foo":"bar","biz":["baz","bing"],"bing":{"pow":true},"lspReset":false}')
+  if (isBrowser) t.equal(window.localStorage.getItem('test'), '{"foo":"bar","biz":["baz","bing"],"bing":{"pow":true},"lspReset":false}')
 
   const state2 = localStorageProxy('test', {
     lspReset: false,
@@ -59,7 +61,7 @@ test('test basic behavior', async t => {
     t.equal(state4.beep, 'boop', 'cought the update')
     state4.removeEventListener('update', eventHandler)
     state4.addEventListener('update', secondHandler)
-    window.localStorage.setItem('foo', 'bar')
+    if (isBrowser) window.localStorage.setItem('foo', 'bar')
   }
 
   state4.addEventListener('update', eventHandler)

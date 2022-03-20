@@ -4,6 +4,7 @@ const assert = (m => /* c8 ignore start */ m.__esModule ? m.default : m /* c8 ig
 
 let ls
 if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
+  // A simple localStorage interface so that lsp works in SSR contexts. Not for persistant storage in node.
   const _nodeStorage = {}
   ls = {
     getItem (name) {
@@ -54,8 +55,20 @@ Object.defineProperty(exports, '__esModule', {value: true}).default = (name, opt
 
   state.lspReset = lspReset
 
-  if (storageEventListener && typeof window?.addEventListener !== 'undefined') {
+  if (storageEventListener && typeof window !== 'undefined' && typeof window.addEventListener !== 'undefined') {
     state.addEventListener('storage', (ev) => {
+      // Replace state with whats stored on localStorage... it is newer.
+      for (const k of Object.keys(state)) {
+        delete state[k]
+      }
+      const restoredState = JSON.parse(ls.getItem(name)) || {}
+      for (const [k, v] of Object.entries({
+        ...defaults,
+        ...restoredState
+      })) {
+        state[k] = v
+      }
+      opts.lspReset = restoredState.lspReset
       state.dispatchEvent(new Event('update'))
     })
   }
