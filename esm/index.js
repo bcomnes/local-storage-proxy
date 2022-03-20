@@ -1,3 +1,4 @@
+/* eslint-env browser */
 import assert from 'webassert'
 
 let ls
@@ -21,29 +22,51 @@ if (typeof window === 'undefined' || typeof window.localStorage === 'undefined')
 
 export default (name, opts = {}) => {
   assert(name, 'namepace required')
-  const { defaults = {}, lspReset = false } = opts
+  const {
+    defaults = {},
+    lspReset = false,
+    storageEventListener = true
+  } = opts
 
-  let state
+  const state = new EventTarget()
   try {
-    state = JSON.parse(ls.getItem(name)) || {}
-    if (state.lspReset !== lspReset) {
+    const restoredState = JSON.parse(ls.getItem(name)) || {}
+    if (restoredState.lspReset !== lspReset) {
       ls.removeItem(name)
-      state = {}
+      for (const [k, v] of Object.entries({
+        ...defaults
+      })) {
+        state[k] = v
+      }
+    } else {
+      for (const [k, v] of Object.entries({
+        ...defaults,
+        ...restoredState
+      })) {
+        state[k] = v
+      }
     }
   } catch (e) {
     console.error(e)
     ls.removeItem(name)
-    state = {}
   }
 
   state.lspReset = lspReset
-  state = Object.assign(defaults, state)
+
+  if (storageEventListener && typeof window?.addEventListener !== 'undefined') {
+    state.addEventListener('storage', (ev) => {
+      state.dispatchEvent(new Event('update'))
+    })
+  }
 
   function boundHandler (rootRef) {
     return {
       get (obj, prop) {
         if (typeof obj[prop] === 'object' && obj[prop] !== null) {
           return new Proxy(obj[prop], boundHandler(rootRef))
+        } else if (typeof obj[prop] === 'function' && obj === rootRef) {
+          // this returns bound EventTarget functions
+          return obj[prop].bind(obj)
         } else {
           return obj[prop]
         }
@@ -52,6 +75,7 @@ export default (name, opts = {}) => {
         obj[prop] = value
         try {
           ls.setItem(name, JSON.stringify(rootRef))
+          rootRef.dispatchEvent(new Event('update'))
           return true
         } catch (e) {
           console.error(e)

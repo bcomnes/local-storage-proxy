@@ -1,4 +1,4 @@
-const localStorageProxy = require('.')
+const localStorageProxy = require('.').default
 window.localStorage.clear()
 const state = localStorageProxy('namespace', {
   defaults: {
@@ -6,6 +6,7 @@ const state = localStorageProxy('namespace', {
     defaults: null
   }
 })
+window.state = state
 
 console.log(state.some) // []
 state.some.push('foo')

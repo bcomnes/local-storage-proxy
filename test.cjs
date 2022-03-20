@@ -41,4 +41,28 @@ test('test basic behavior', async t => {
 
   t.deepEqual(state3.new, 'defaults', 'state is busted')
   t.deepEqual(state3.biz, 'bar', 'state is busted')
+
+  const state4 = localStorageProxy('test', {
+    lspReset: 'busted-again',
+    defaults: {
+      new: 'defaults',
+      biz: 'bar'
+    }
+  })
+
+  const secondHandler = (ev) => {
+    t.fail('Should not fire on the same page')
+  }
+
+  const eventHandler = (ev) => {
+    t.ok(ev, 'got the event')
+    t.equal(state4.beep, 'boop', 'cought the update')
+    state4.removeEventListener('update', eventHandler)
+    state4.addEventListener('update', secondHandler)
+    window.localStorage.setItem('foo', 'bar')
+  }
+
+  state4.addEventListener('update', eventHandler)
+
+  state4.beep = 'boop'
 })
