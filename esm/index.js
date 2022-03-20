@@ -1,3 +1,4 @@
+/* eslint-env browser */
 import assert from 'webassert'
 
 let ls
@@ -23,21 +24,25 @@ export default (name, opts = {}) => {
   assert(name, 'namepace required')
   const { defaults = {}, lspReset = false } = opts
 
-  let state
+  const state = new EventTarget()
   try {
-    state = JSON.parse(ls.getItem(name)) || {}
-    if (state.lspReset !== lspReset) {
+    const restoredState = JSON.parse(ls.getItem(name)) || {}
+    if (restoredState.lspReset !== lspReset) {
       ls.removeItem(name)
-      state = {}
+    } else {
+      for (const [k, v] of Object.entries({
+        ...defaults,
+        ...restoredState
+      })) {
+        state[k] = v
+      }
     }
   } catch (e) {
     console.error(e)
     ls.removeItem(name)
-    state = {}
   }
 
   state.lspReset = lspReset
-  state = Object.assign(defaults, state)
 
   function boundHandler (rootRef) {
     return {
@@ -52,6 +57,7 @@ export default (name, opts = {}) => {
         obj[prop] = value
         try {
           ls.setItem(name, JSON.stringify(rootRef))
+          rootRef.dispatchEvent(new Event('update'))
           return true
         } catch (e) {
           console.error(e)
