@@ -2,6 +2,9 @@ name: tests
 
 on: [pull_request, push]
 
+env:
+  FORCE_COLOR: 2
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -9,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14]
+        node: [lts/*]
 
     steps:
     - uses: actions/checkout@v3
