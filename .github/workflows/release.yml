@@ -1,4 +1,4 @@
-name: Version and Release
+name: npm bump
 
 on:
   workflow_dispatch:
@@ -8,7 +8,12 @@ on:
         required: true
 
 env:
-  node_version: 14
+  node_version: 'lts/*'
+  FORCE_COLOR: 2
+  
+concurrency: # prevent concurrent releases
+  group: npm-bump
+  cancel-in-progress: true
 
 jobs:
   version_and_release:
