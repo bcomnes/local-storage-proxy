@@ -67,4 +67,8 @@ test('test basic behavior', async t => {
   state4.addEventListener('update', eventHandler)
 
   state4.beep = 'boop'
+
+  t.doesNotThrow(() => {
+    console.log(state4, undefined, 'Console logging the proxy does not crash')
+  })
 })
