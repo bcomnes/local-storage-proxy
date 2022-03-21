@@ -78,7 +78,7 @@ Object.defineProperty(exports, '__esModule', {value: true}).default = (name, opt
       get (obj, prop) {
         if (typeof obj[prop] === 'object' && obj[prop] !== null) {
           return new Proxy(obj[prop], boundHandler(rootRef))
-        } else if (typeof obj[prop] === 'function' && obj === rootRef) {
+        } else if (typeof obj[prop] === 'function' && obj === rootRef && prop !== 'constructor') {
           // this returns bound EventTarget functions
           return obj[prop].bind(obj)
         } else {
