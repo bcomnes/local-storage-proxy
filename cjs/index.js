@@ -56,7 +56,7 @@ Object.defineProperty(exports, '__esModule', {value: true}).default = (name, opt
   state.lspReset = lspReset
 
   if (storageEventListener && typeof window !== 'undefined' && typeof window.addEventListener !== 'undefined') {
-    state.addEventListener('storage', (ev) => {
+    window.addEventListener('storage', (ev) => {
       // Replace state with whats stored on localStorage... it is newer.
       for (const k of Object.keys(state)) {
         delete state[k]
