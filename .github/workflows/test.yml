@@ -22,7 +22,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: sudo apt-get install xvfb
     - run: npm i
-    - run: xvfb-run --auto-servernum npm test
+    - run: npm test
     - name: Cleanup xvfb pidx
       uses: bcomnes/cleanup-xvfb@v1
 
