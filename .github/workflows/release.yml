@@ -35,7 +35,7 @@ jobs:
     - name: Cleanup xvfb pidx
       uses: bcomnes/cleanup-xvfb@v1
     - name: Test, version and publush to npm
-      uses: bcomnes/npm-bump@v2.1.0
+      uses: bcomnes/npm-bump@v2.2.1
       with:
         git_email: bcomnes@gmail.com
         git_username: ${{ github.actor }}
